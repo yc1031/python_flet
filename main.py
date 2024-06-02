@@ -1,27 +1,31 @@
+
 import flet as ft
-import subprocess
-
-class PullGui(ft.UserControl):
-    def __init__(self, page: ft.page):
-        super().__init__()
-        self.page = page
-
-    def build(self):
-        self.page.title = "Git Control"
-        self.page.verticle_alignment = ft.MainAxisAlignment.CENTER
-
-        txt_main = ft.TextField("maincontroller")
-        self.select_brach = [ft.Dropdown(on_click=self.on_click_key, options=self.select_key_options())]
-
-        self.page.add(
-            ft.Row(
-                [
-                    ft.
-                ]
-            )
-        )
+from git_control import GitControl 
 
 def main(page: ft.Page):
-    page.add(PullGui(page))
+    page.title = "Git Control"
+    page.verticle_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.scroll = ft.ScrollMode.ADAPTIVE
+    page.add(
+        ft.Tabs(
+            selected_index=1,
+            tabs=[
+                ft.Tab(
+                    text="Tab 1",
+                    content=ft.Container(
+                        content=ft.Column([ 
+                        GitControl("maincontroller"), 
+                        GitControl("microcomputer")])
+                    )
+                ),
+                ft.Tab(
+                    tab_content=ft.Icon(ft.icons.SEARCH),
+                    content=ft.Text("This is Tab 2"),
+                ),            
+            ]
+        )
+    )        
 
 ft.app(target = main)
+
