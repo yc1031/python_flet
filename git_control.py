@@ -98,7 +98,7 @@ class GitControl(ft.Row):
         Returns:
             _type_: _description_
         """
-        key_option = [ft.dropdown.Option(text=text) for text in selected_text]
+        key_option = [ft.dropdown.Option(text=text.replace('* ', '')) for text in selected_text]
         return key_option
 
     def exec_pull(self,e):
