@@ -10,32 +10,50 @@ class GitControl(ft.Row):
     def __init__(self, target):
         super().__init__()
 
-        cmd_ctl = CommandControl(target)
+        self.cmd_ctl = CommandControl(target)
 
         # get git branch
-        self.branch = cmd_ctl.get_branches()
+        self.branch = self.cmd_ctl.get_branches()
         selected_branch = self.branch.copy()
 
         # get git commit hash
-        self.commit_hash = cmd_ctl.get_commit_hash()
+        self.commit_hash = self.cmd_ctl.get_commit_hash()
         selected_hash = self.commit_hash.copy()
 
         # set row data
-        self.txt_main = ft.TextField(value=target)
+        self.txt_main = ft.TextField(value=target,
+                                     expand=1)
+        
         self.search_text_for_branch = ft.TextField(label="search branch", 
                                                    on_change=self.on_chane_value_branch, 
                                                    hint_text="input search text",
                                                    filled=True,
-                                                   prefix_icon=ft.icons.SEARCH)
+                                                   prefix_icon=ft.icons.SEARCH,
+                                                   expand=2)
+        
         self.dropdown_branch = ft.Dropdown(options=self.select_key_options(selected_branch),
-                                           label="select branch")
+                                           label="select branch",
+                                           expand=3)
+        
         self.search_text_for_hash = ft.TextField(label="search hash", 
                                                  on_change=self.on_chane_value_hash, 
                                                  hint_text="input search text",
                                                  filled=True,
-                                                 prefix_icon=ft.icons.SEARCH)
+                                                 prefix_icon=ft.icons.SEARCH,
+                                                expand=2)
+        
         self.dropdown_hash = ft.Dropdown(options=self.select_key_options(selected_hash),
-                                         label="select hash")
+                                         label="select hash",
+                                         expand=3)
+        
+        self.pull_btn = ft.ElevatedButton(text="Pull", 
+                                          on_click=self.exec_pull)
+
+        self.checkout_branch_btn = ft.ElevatedButton(text="Checkout branch", 
+                                               on_click=self.exec_checkout_branch)
+
+        self.checkout_hash_btn = ft.ElevatedButton(text="Checkout hash", 
+                                               on_click=self.exec_checkout_hash)
 
 
         self.controls= [
@@ -43,8 +61,14 @@ class GitControl(ft.Row):
             self.search_text_for_branch,
             self.dropdown_branch,                    
             self.search_text_for_hash,
-            self.dropdown_hash,                    
+            self.dropdown_hash,
+            self.pull_btn,
+            self.checkout_branch_btn,
+            self.checkout_hash_btn,
         ]
+        self.width = 1600
+        self.alignment=ft.MainAxisAlignment.CENTER,
+        self.vertical_alignment=ft.CrossAxisAlignment.CENTER
 
     def on_chane_value_branch(self, e):
         """
@@ -76,3 +100,12 @@ class GitControl(ft.Row):
         """
         key_option = [ft.dropdown.Option(text=text) for text in selected_text]
         return key_option
+
+    def exec_pull(self,e):
+        self.cmd_ctl.exec_pull()
+
+    def exec_checkout_branch(self,e):
+        self.cmd_ctl.exec_checkout(self.dropdown_branch.value)
+
+    def exec_checkout_hash(self,e):
+        self.cmd_ctl.exec_checkout(self.dropdown_hash.value)

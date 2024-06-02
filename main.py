@@ -4,19 +4,19 @@ from git_control import GitControl
 
 def main(page: ft.Page):
     page.title = "Git Control"
-    page.verticle_alignment = ft.MainAxisAlignment.CENTER
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.scroll = ft.ScrollMode.ADAPTIVE
+    page.window_height = 500
+    page.window_width = 1900
     page.add(
         ft.Tabs(
-            selected_index=1,
+            selected_index=0,
             tabs=[
                 ft.Tab(
                     text="Tab 1",
                     content=ft.Container(
                         content=ft.Column([ 
                         GitControl("maincontroller"), 
-                        GitControl("microcomputer")])
+                        GitControl("microcomputer")],
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                     )
                 ),
                 ft.Tab(
